@@ -12,6 +12,10 @@ class Responder
 
     # otherwise parse out the command and make sure it matches
     # our command.
-    @command == command.split.first
+    if @command.is_a? Regexp
+        command =~ @command
+    else
+        @command == command.split.first
+    end
   end
 end
