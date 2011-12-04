@@ -53,6 +53,8 @@ class HappyFunTimeBot
   def process(from, command)
     return [] if !responders.any? {|r| r.command.nil? } and !(command =~ self.config[:command_regex])
 
+    puts from
+    puts command
     responders.select {|r| r.responds_to?($1) }.map  do |responder|
       args = command.split
       args.shift

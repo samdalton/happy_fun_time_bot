@@ -6,12 +6,12 @@ class Responder
     @block = block
   end
 
-  def responds_to?(command)
+  def responds_to?(message)
     # respond to all if our command is nil.
     return true if @command.nil?
 
     # otherwise parse out the command and make sure it matches
     # our command.
-    command =~ @command
+    message =~ @command
   end
 end
