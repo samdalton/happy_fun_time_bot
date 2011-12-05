@@ -18,7 +18,7 @@ class HappyFunTimeBot
     config = {:command_regex => /^!(.+)$/}.merge(config)
     self.client = Jabber::Client.new(config[:jid])
     self.muc    = Jabber::MUC::SimpleMUCClient.new(client)
-    self.command_regexp = /^!(.+)$/
+    #self.command_regexp = /^!(.+)$/
     self.responders = []
     self.config = config
 
@@ -51,14 +51,15 @@ class HappyFunTimeBot
   private
 
   def process(from, command)
-    return [] if !responders.any? {|r| r.command.nil? } and !(command =~ self.config[:command_regex])
+    return [] if !responders.any? {|r| r.command.nil? } and !(command =~ self.config[:command_regex]) 
+    return [] if from == self.config[:nick]
 
-    puts from
-    puts command
-    responders.select {|r| r.responds_to?($1) }.map  do |responder|
-      args = command.split
-      args.shift
-      ret = responder.block.call(from, args.join(' '))
+    responders.select {|r| r.responds_to?(command) }.map  do |responder|
+      #args = command.split
+      #args.shift
+        args = responder.matched_component(command).to_a
+        args.shift
+      ret = responder.block.call(from, args)
       send_response(ret)
       ret
     end

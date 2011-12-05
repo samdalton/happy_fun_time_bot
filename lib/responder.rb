@@ -12,6 +12,12 @@ class Responder
 
     # otherwise parse out the command and make sure it matches
     # our command.
-    message =~ @command
+    matched_component message
+  end
+
+  def matched_component message
+
+      message.match @command
+    
   end
 end
